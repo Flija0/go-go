@@ -36,9 +36,6 @@ public class User implements Serializable {
     @OneToOne(optional = true)
     private Car car;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Conversation> conversationList;
-
     @OneToMany(mappedBy = "creator")
     @JsonIgnore
     private List<Ride> rideList;

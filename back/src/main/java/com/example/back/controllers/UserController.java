@@ -3,7 +3,6 @@ package com.example.back.controllers;
 import com.example.back.dto.jwtDTO;
 import com.example.back.entities.User;
 import com.example.back.serviceImplements.JwtService;
-import com.example.back.serviceImplements.UserService;
 import com.example.back.serviceInterfaces.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
