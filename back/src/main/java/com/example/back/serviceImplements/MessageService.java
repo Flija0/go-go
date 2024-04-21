@@ -7,9 +7,12 @@ import com.example.back.repositories.ConversationRepo;
 import com.example.back.repositories.MessageRepo;
 import com.example.back.repositories.UserRepo;
 import com.example.back.serviceInterfaces.IMessageService;
+import com.pusher.rest.Pusher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -29,8 +32,6 @@ public class MessageService implements IMessageService {
     @Override
     public Message addMessage(String body, int senderId, int conversationId) {
 
-        
-
         User user = userRepo.findById(senderId).orElse(null);
         Conversation conversation = conversationRepo.findById(conversationId).orElse(null);
 
@@ -44,6 +45,13 @@ public class MessageService implements IMessageService {
         message.setConversation(conversation);
         message.setBody(body);
         message.setCreatedAt(new Date());
+
+        //real-time
+        /* pusher = new Pusher("1791390", "fabd281453b94b3c02f6", "227bbea53c99b601cd4b");
+        pusher.setCluster("eu");
+        pusher.setEncrypted(true);
+
+        pusher.trigger(String.valueOf(conversationId),"incoming-message", Collections.singletonMap("message", body));*/
 
         return messageRepo.save(message) ;
     }
