@@ -4,6 +4,7 @@ package com.example.back.serviceImplements;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.back.dto.jwtDTO;
 import com.example.back.entities.User;
 import com.example.back.repositories.UserRepo;
@@ -54,6 +55,7 @@ public class JwtService implements UserDetailsService {
                     .withIssuer("bleedclt")
                     .withSubject(user.getEmail())
                     .withClaim("user", user.getId())
+                    .withClaim("email", user.getEmail()) // Add user email to the token
                     .withClaim("role", user.getRole()) // Add the 'role' claim to the token
                     .withIssuedAt(new Date())
                     .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000L))
@@ -66,6 +68,10 @@ public class JwtService implements UserDetailsService {
         }
     }
 
+    public String extractUserEmail(String token) {
+        DecodedJWT decodedJWT = JWT.decode(token);
+        return decodedJWT.getClaim("email").asString();
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

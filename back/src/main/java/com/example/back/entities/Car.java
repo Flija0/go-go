@@ -24,8 +24,7 @@ public class Car implements Serializable {
     private String serialNumber;
     private String photo;
 
-    @NotFound(action= NotFoundAction.IGNORE)
-    @JsonIgnore
-    @OneToOne(mappedBy="car")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User owner;
 }

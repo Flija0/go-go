@@ -14,6 +14,7 @@ import com.example.back.entities.jwt.JwtRequest;
 import com.example.back.repositories.UserRepo;
 import com.example.back.serviceInterfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -30,7 +31,7 @@ public class UserService implements IUserService {
     @Autowired
     JwtService jwtService;
     @Override
-    public jwtDTO addUser(User user) {
+    public ResponseEntity<String> addUser(User user) {
         Boolean v = false;
         String motif=null;
         jwtDTO jwtToken = null;
@@ -60,9 +61,21 @@ public class UserService implements IUserService {
             motif = "succes";
             System.out.println("success");
         }
-        return jwtToken;
+        String successMessage = "User created successfully";
+        return ResponseEntity.ok(successMessage);
     }
 
+    public int getUserIdFromToken(String token) {
+        DecodedJWT decodedJWT = JWT.decode(token);
+        return decodedJWT.getClaim("user").asInt();
+    }
+
+    public void addCarToUser(int userId, Car car) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+        car.setOwner(user);
+        userRepository.save(user);
+    }
     @Override
     public Boolean validateAccount(String jwt) {
         User user = decodeToken(jwt);

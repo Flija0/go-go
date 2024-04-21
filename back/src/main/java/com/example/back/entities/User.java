@@ -33,8 +33,8 @@ public class User implements Serializable {
     private LocalDate dateCompte;
     private Integer role;
 
-    @OneToOne(optional = true)
-    private Car car;
+
+
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Conversation> conversationList;

@@ -7,6 +7,7 @@ import com.example.back.serviceImplements.UserService;
 import com.example.back.serviceInterfaces.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +25,10 @@ public class UserController {
     JwtService jwtService;
 
     @PostMapping("/add")
-    public jwtDTO addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    public ResponseEntity<String> addUser(@RequestBody User user) {
+         userService.addUser(user);
+        String successMessage = "User created successfully";
+        return ResponseEntity.ok(successMessage);
     }
     @PostMapping({"/authenticate"})
     public jwtDTO createJwtToken(@RequestBody User user) throws Exception {
