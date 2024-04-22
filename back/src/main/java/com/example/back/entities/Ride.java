@@ -22,7 +22,7 @@ public class Ride implements Serializable {
     private String startLocation;
     private String finalDestination;
     private int numberOfSeats;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date goingOffTime;
     private Boolean femaleOnly;
     private int consumption;

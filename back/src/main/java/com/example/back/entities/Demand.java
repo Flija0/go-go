@@ -19,11 +19,10 @@ public class Demand implements Serializable {
     private int id;
 
     private Status status;
-    private String wantedLocation;
 
     @ManyToOne
     User user;
 
     @ManyToOne
-    User ride;
+    Ride ride;
 }
