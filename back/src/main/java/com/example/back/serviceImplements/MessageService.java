@@ -47,11 +47,11 @@ public class MessageService implements IMessageService {
         message.setCreatedAt(new Date());
 
         //real-time
-        /* pusher = new Pusher("1791390", "fabd281453b94b3c02f6", "227bbea53c99b601cd4b");
+        Pusher pusher = new Pusher("1791390", "fabd281453b94b3c02f6", "227bbea53c99b601cd4b");
         pusher.setCluster("eu");
         pusher.setEncrypted(true);
 
-        pusher.trigger(String.valueOf(conversationId),"incoming-message", Collections.singletonMap("message", body));*/
+        pusher.trigger(String.valueOf(conversationId),"incoming-message", Collections.singletonMap("message", body));
 
         return messageRepo.save(message) ;
     }
