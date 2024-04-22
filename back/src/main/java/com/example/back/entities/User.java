@@ -1,9 +1,11 @@
 package com.example.back.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
+
 import lombok.*;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -20,16 +22,19 @@ public class User implements Serializable {
 
     private String firstName;
     private String lastName;
-    private String login;
-    private String password;
+    private String email;
+    private String mdp;
     private int phone;
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private int consumptionExpected;
+    private Boolean active;
+    private Integer verified;
+    private LocalDate dateCompte;
+    private Integer role;
 
-    @OneToOne(optional = true)
-    @Nullable
-    private Car car;
+
+
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Conversation> conversationList;

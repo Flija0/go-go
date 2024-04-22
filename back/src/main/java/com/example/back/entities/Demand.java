@@ -1,8 +1,9 @@
 package com.example.back.entities;
 
-import jakarta.persistence.*;
+
 import lombok.*;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
