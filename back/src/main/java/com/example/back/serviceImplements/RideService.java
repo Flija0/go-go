@@ -46,6 +46,9 @@ public class RideService implements IRideService {
         @Override
     public Ride addRide(Ride ride, int creatorId) {
         userRepo.findById(creatorId).ifPresent(ride::setCreator);
+        //add consumptionExpected to the user
+        ride.getCreator().setConsumptionExpected(ride.getCreator().getConsumptionExpected() + ride.getConsumption());
+        userRepo.save(ride.getCreator());
         return rideRepo.save(ride);
     }
 

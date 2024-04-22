@@ -86,6 +86,14 @@ public class DemandService implements IDemandService {
         Demand demand = demandRepo.findById(id).orElse(null);
         if(demand == null) return null;
         demand.setStatus(Status.valueOf(status));
+
+        if(status.equals("Accepted")){
+            demand.getRide().setNumberOfSeats(demand.getRide().getNumberOfSeats() - 1);
+            demand.getUser().setConsumptionExpected(demand.getUser().getConsumptionExpected() + demand.getRide().getConsumption());
+            userRepo.save(demand.getUser());
+            rideRepo.save(demand.getRide());
+        }
+
         return demandRepo.save(demand);
     }
 }
