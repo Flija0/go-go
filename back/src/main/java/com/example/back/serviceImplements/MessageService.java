@@ -11,10 +11,7 @@ import com.pusher.rest.Pusher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MessageService implements IMessageService {
@@ -51,7 +48,12 @@ public class MessageService implements IMessageService {
         pusher.setCluster("eu");
         pusher.setEncrypted(true);
 
-        pusher.trigger(String.valueOf(conversationId),"incoming-message", Collections.singletonMap("message", body));
+        Map<String, Object>  messageData = new HashMap<>();
+        messageData.put("sender", senderId);
+        messageData.put("message", body);
+
+        pusher.trigger(String.valueOf(conversationId),"incoming-message",
+                messageData);
 
         return messageRepo.save(message) ;
     }
