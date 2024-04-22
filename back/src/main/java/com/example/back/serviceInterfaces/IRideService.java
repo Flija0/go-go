@@ -10,7 +10,7 @@ public interface IRideService {
 
     Ride getRide(int id);
 
-    Ride updateRide(Ride ride);
+    Ride updateRide(Ride ride, int rideId);
 
     void deleteRide(int id);
 

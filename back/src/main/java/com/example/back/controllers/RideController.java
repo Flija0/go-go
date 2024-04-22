@@ -24,9 +24,9 @@ public class RideController {
         return iRideService.getRide(id);
     }
 
-    @PutMapping("/update")
-    Ride updateRide(@RequestBody Ride ride){
-        return iRideService.updateRide(ride);
+    @PutMapping("/update/{rideId}")
+    Ride updateRide(@RequestBody Ride ride, @PathVariable int rideId){
+        return iRideService.updateRide(ride, rideId);
     }
 
     @DeleteMapping("/delete/{id}")

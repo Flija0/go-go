@@ -55,8 +55,17 @@ public class RideService implements IRideService {
     }
 
     @Override
-    public Ride updateRide(Ride ride) {
-        return rideRepo.save(ride);
+    public Ride updateRide(Ride ride, int rideId) {
+        Ride rideToUpdate = rideRepo.findById(rideId).orElse(null);
+        if(rideToUpdate == null) return null;
+
+        if(ride.getFinalDestination() != null)
+            rideToUpdate.setFinalDestination(ride.getFinalDestination());
+
+        if(ride.getGoingOffTime() != null)
+            rideToUpdate.setGoingOffTime(ride.getGoingOffTime());
+
+        return rideRepo.save(rideToUpdate);
     }
 
     @Override
