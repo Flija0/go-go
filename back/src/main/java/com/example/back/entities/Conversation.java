@@ -24,9 +24,11 @@ public class Conversation implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
-    @ManyToMany(mappedBy = "conversationList")
-    @JsonIgnore
-    private List<User> userList;
+    @ManyToOne
+    private User firstUser;
+
+    @ManyToOne
+    private User secondUser;
 
     @OneToMany(mappedBy = "conversation")
     @JsonIgnore
