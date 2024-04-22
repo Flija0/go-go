@@ -52,6 +52,9 @@ public class UserService implements IUserService {
             JwtRequest jwtRequest = new JwtRequest();
             jwtRequest.setUserEmail(user.getEmail());
             jwtRequest.setUserPassword(user.getMdp());
+            jwtRequest.setFirstName(user.getFirstName());
+            jwtRequest.setLastName(user.getLastName());
+            jwtRequest.setGender(user.getGender());
             System.out.println(jwtRequest.toString());
             try {
                 jwtToken = jwtService.createJwtToken(user);

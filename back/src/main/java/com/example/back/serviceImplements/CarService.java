@@ -17,7 +17,6 @@ public class CarService {
         if (car.getOwner().getId() != userId) {
             throw new RuntimeException("Unauthorized: You are not the owner of this car.");
         }
-
         carRepository.delete(car);
     }
 }
