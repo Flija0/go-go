@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CarRepo extends JpaRepository<Car,Integer> {
     Car findByOwner(User user);
+
+
 }

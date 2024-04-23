@@ -28,7 +28,7 @@ import java.util.UUID;
 @Service
 public class JwtService implements UserDetailsService {
 
-    private static final String SECRET = "Inetum";
+    private static final String SECRET = "bleedclt";
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -52,7 +52,7 @@ public class JwtService implements UserDetailsService {
             System.out.println(user.getEmail() + " found by email");
 
             jwtToken = JWT.create()
-                    .withIssuer("Inetum")
+                    .withIssuer("bleedclt")
                     .withSubject(user.getEmail())
                     .withClaim("user", user.getId())
                     .withClaim("email", user.getEmail()) // Add user email to the token

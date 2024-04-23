@@ -1,13 +1,16 @@
 package com.example.back.controllers;
 
 import com.example.back.entities.Car;
+import com.example.back.entities.Ride;
 import com.example.back.entities.User;
 import com.example.back.repositories.CarRepo;
 import com.example.back.repositories.UserRepo;
 import com.example.back.serviceImplements.CarService;
 import com.example.back.serviceImplements.JwtService;
 import com.example.back.serviceImplements.UserService;
+import com.example.back.serviceInterfaces.ICarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +45,13 @@ public class CarController {
 
         return ResponseEntity.ok(car);
     }
+
+    @GetMapping("/Car")
+    public Car getCar(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken){
+        User user = userService.decodeToken(jwtToken);
+        return carService.getCar(user.getId());
+    }
+
 
     @DeleteMapping("/cars/{carId}")
     public ResponseEntity<String> deleteCar(@PathVariable int carId, @RequestHeader("Authorization") String token) {
