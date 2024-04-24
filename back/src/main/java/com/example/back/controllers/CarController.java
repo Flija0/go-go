@@ -31,7 +31,7 @@ public class CarController {
     private UserRepo userRepository;
 
     @Transactional
-    @PostMapping("/cars")
+    @PostMapping("/addCar")
     public ResponseEntity<?> createCar(@RequestBody Car car, @RequestHeader("Authorization") String token) {
         String jwtToken = token.substring(7); // Remove "Bearer " prefix
         int userId = userService.getUserIdFromToken(jwtToken);
@@ -46,14 +46,14 @@ public class CarController {
         return ResponseEntity.ok(car);
     }
 
-    @GetMapping("/Car")
+    @GetMapping("/getCar")
     public Car getCar(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken){
         User user = userService.decodeToken(jwtToken);
         return carService.getCar(user.getId());
     }
 
 
-    @DeleteMapping("/cars/{carId}")
+    @DeleteMapping("/deleteCar/{carId}")
     public ResponseEntity<String> deleteCar(@PathVariable int carId, @RequestHeader("Authorization") String token) {
         String jwtToken = token.substring(7); // Remove "Bearer " prefix
         int userId = userService.getUserIdFromToken(jwtToken);

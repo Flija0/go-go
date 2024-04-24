@@ -18,7 +18,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "bleedclt";
+    private static final String SECRET_KEY = "inetum";
 
     private static final int TOKEN_VALIDITY = 3600 * 5;
     private final UserRepo userRepository;
@@ -59,7 +59,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         User user = userRepository.findByEmail(userDetails.getUsername());
         return JWT.create()
-                .withIssuer("bleedclt")
+                .withIssuer("inetum")
                 .withSubject(user.getEmail())
                 .withClaim("user", user.getEmail())
                 .withIssuedAt(new Date())

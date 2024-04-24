@@ -106,9 +106,9 @@ public class UserService implements IUserService {
     @Override
     public User decodeToken(String jwtToken){
         String mail;
-        Algorithm algorithm = Algorithm.HMAC512("bleedclt");
+        Algorithm algorithm = Algorithm.HMAC512("inetum");
         JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer("bleedclt")
+                .withIssuer("inetum")
                 .build();
         try {
             String jwtTokenn = URLDecoder.decode(jwtToken, "UTF-8");
