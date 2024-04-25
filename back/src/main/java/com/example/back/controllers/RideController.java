@@ -34,8 +34,8 @@ public class RideController {
         iRideService.deleteRide(id);
     }
 
-    @GetMapping("/getAllRidesForTodayAndTomorrow/{id}")
-    List<Ride> getAllRidesForTodayAndTomorrow(@PathVariable int id){
-        return iRideService.getAllRidesForTodayAndTomorrow(id);
+    @GetMapping("/getAllRidesForTodayAndTomorrow")
+    List<Ride> getAllRidesForTodayAndTomorrow(){
+        return iRideService.getAllRidesForTodayAndTomorrow();
     }
 }
