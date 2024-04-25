@@ -72,21 +72,13 @@ public class RideService implements IRideService {
     }
 
     @Override
-    public List<Ride> getAllRidesForTodayAndTomorrow(int id) {
-
-        User user = userRepo.findById(id).orElse(null);
-        if(user == null) return null;
-
-        if(user.getGender() == Gender.Female)
+    public List<Ride> getAllRidesForTodayAndTomorrow() {
             return rideRepo.findAll().stream()
                     .filter(ride -> ride.getNumberOfSeats() > 0)
-                    //check if its created today or tomorrow
                     .filter(ride -> {
                         Calendar rideDate = Calendar.getInstance();
                         rideDate.setTime(ride.getDateCreated());
-
                         Calendar currentDate = Calendar.getInstance();
-
                         // Check if the ride date is either today or tomorrow
                         return (rideDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
                                 rideDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
@@ -96,24 +88,5 @@ public class RideService implements IRideService {
                                         rideDate.get(Calendar.DAY_OF_MONTH) == (currentDate.get(Calendar.DAY_OF_MONTH) + 1));
                     })
                     .collect(Collectors.toList());
-        else
-        return rideRepo.findAll().stream()
-                .filter(ride -> ride.getNumberOfSeats() > 0)
-                .filter(ride -> !ride.getFemaleOnly())
-                .filter(ride -> {
-                    Calendar rideDate = Calendar.getInstance();
-                    rideDate.setTime(ride.getDateCreated());
-
-                    Calendar currentDate = Calendar.getInstance();
-
-                    // Check if the ride date is either today or tomorrow
-                    return (rideDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
-                            rideDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
-                            rideDate.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DAY_OF_MONTH)) ||
-                            (rideDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
-                                    rideDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
-                                    rideDate.get(Calendar.DAY_OF_MONTH) == (currentDate.get(Calendar.DAY_OF_MONTH) + 1));
-                })
-                .collect(Collectors.toList());
     }
 }
