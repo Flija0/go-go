@@ -14,7 +14,7 @@ public interface IRideService {
 
     void deleteRide(int id);
 
-    List<Ride> getAllRidesForTodayAndTomorrow(int id);
+    List<Ride> getAllRidesForTodayAndTomorrow();
 
 
 }
