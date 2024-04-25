@@ -1,5 +1,6 @@
 package com.example.back.serviceImplements;
 
+import com.example.back.entities.Day;
 import com.example.back.entities.Gender;
 import com.example.back.entities.Ride;
 import com.example.back.entities.User;
@@ -32,6 +33,14 @@ public class RideService implements IRideService {
         //decrease time by 1 hour
 
             ride.setGoingOffTime(new Date(ride.getGoingOffTime().getTime() - 3600000));
+            if(ride.getDay().equals(Day.Today))
+                ride.setDateCreated(new Date());
+            else if(ride.getDay().equals(Day.Tomorrow)){
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(new Date());
+                cal.add(Calendar.DATE, 1);
+                ride.setDateCreated(cal.getTime());
+            }
 
         ride.getCreator().setConsumptionExpected(ride.getCreator().getConsumptionExpected() + ride.getConsumption());
         userRepo.save(ride.getCreator());
@@ -71,11 +80,40 @@ public class RideService implements IRideService {
         if(user.getGender() == Gender.Female)
             return rideRepo.findAll().stream()
                     .filter(ride -> ride.getNumberOfSeats() > 0)
+                    //check if its created today or tomorrow
+                    .filter(ride -> {
+                        Calendar rideDate = Calendar.getInstance();
+                        rideDate.setTime(ride.getDateCreated());
+
+                        Calendar currentDate = Calendar.getInstance();
+
+                        // Check if the ride date is either today or tomorrow
+                        return (rideDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
+                                rideDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
+                                rideDate.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DAY_OF_MONTH)) ||
+                                (rideDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
+                                        rideDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
+                                        rideDate.get(Calendar.DAY_OF_MONTH) == (currentDate.get(Calendar.DAY_OF_MONTH) + 1));
+                    })
                     .collect(Collectors.toList());
         else
         return rideRepo.findAll().stream()
                 .filter(ride -> ride.getNumberOfSeats() > 0)
                 .filter(ride -> !ride.getFemaleOnly())
+                .filter(ride -> {
+                    Calendar rideDate = Calendar.getInstance();
+                    rideDate.setTime(ride.getDateCreated());
+
+                    Calendar currentDate = Calendar.getInstance();
+
+                    // Check if the ride date is either today or tomorrow
+                    return (rideDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
+                            rideDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
+                            rideDate.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DAY_OF_MONTH)) ||
+                            (rideDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
+                                    rideDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
+                                    rideDate.get(Calendar.DAY_OF_MONTH) == (currentDate.get(Calendar.DAY_OF_MONTH) + 1));
+                })
                 .collect(Collectors.toList());
     }
 }

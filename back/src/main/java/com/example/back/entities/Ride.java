@@ -34,6 +34,8 @@ public class Ride implements Serializable {
     private Boolean femaleOnly;
     private int consumption;
 
+    private Date dateCreated;
+
     @ManyToOne
     User creator;
 }
