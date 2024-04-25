@@ -65,14 +65,8 @@ public class DemandService implements IDemandService {
     @Override
     public List<Demand> getAllDemandsForTheRideCreator(int id) {
 
-        Calendar today = Calendar.getInstance(); // Get today's date
-        today.set(Calendar.HOUR_OF_DAY, 0); // Set hours, minutes, seconds, and milliseconds to 0 for accurate comparison
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-        today.set(Calendar.MILLISECOND, 0);
-
         return demandRepo.findAll().stream().filter(demand -> demand.getRide().getCreator().getId() == id &&
-                isToday(demand.getRide().getGoingOffTime(), today.getTime() ) || isTomorrow(demand.getRide().getGoingOffTime(), today.getTime())
+             demand.getStatus().equals(Status.Waiting)
         ).collect(Collectors.toList());
     }
 
