@@ -1,12 +1,7 @@
 package com.example.back.serviceImplements;
 
-import com.example.back.entities.Demand;
-import com.example.back.entities.Ride;
-import com.example.back.entities.Status;
-import com.example.back.entities.User;
-import com.example.back.repositories.DemandRepo;
-import com.example.back.repositories.RideRepo;
-import com.example.back.repositories.UserRepo;
+import com.example.back.entities.*;
+import com.example.back.repositories.*;
 import com.example.back.serviceInterfaces.IDemandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +21,13 @@ public class DemandService implements IDemandService {
     UserRepo userRepo;
 
     @Autowired
+    ConversationRepo conversationRepo;
+
+    @Autowired
     RideRepo rideRepo;
+
+    @Autowired
+    MessageRepo messageRepo;
 
     private boolean isToday(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
@@ -59,6 +60,33 @@ public class DemandService implements IDemandService {
         demand.setRide(ride);
         demand.setStatus(Status.Waiting);
 
+        Conversation conversation = new Conversation();
+        conversation.setFirstUser(demand.getUser());
+        conversation.setSecondUser(demand.getRide().getCreator());
+        conversation.setCreatedAt(new Date());
+
+
+        Conversation conversationExist = conversationRepo.findAll().stream().filter(conversation1 -> conversation1.getFirstUser().getId() == demand.getUser().getId() && conversation1.getSecondUser().getId() == demand.getRide().getCreator().getId()
+                || conversation1.getFirstUser().getId() == demand.getRide().getCreator().getId() && conversation1.getSecondUser().getId() == demand.getUser().getId()).findFirst().orElse(null);
+
+        if(conversationExist == null){
+            conversationRepo.save(conversation);
+        }
+
+        //add message
+        Message message = new Message();
+        //message body that i have accepted your demand
+        message.setBody("Salut, j'ai une demande de covoiturage pour vous.");
+        message.setSender(demand.getUser());
+        if(conversationExist == null){
+            message.setConversation(conversation);
+        }else{
+            message.setConversation(conversationExist);
+        }
+        message.setCreatedAt(new Date());
+        //save message
+        messageRepo.save(message);
+
         return demandRepo.save(demand);
     }
 
@@ -84,8 +112,40 @@ public class DemandService implements IDemandService {
         if(status.equals("Accepted")){
             demand.getRide().setNumberOfSeats(demand.getRide().getNumberOfSeats() - 1);
             demand.getUser().setConsumptionExpected(demand.getUser().getConsumptionExpected() + demand.getRide().getConsumption());
+
+
             userRepo.save(demand.getUser());
             rideRepo.save(demand.getRide());
+
+
+
+            Conversation conversation = new Conversation();
+            conversation.setFirstUser(demand.getUser());
+            conversation.setSecondUser(demand.getRide().getCreator());
+            conversation.setCreatedAt(new Date());
+
+
+            Conversation conversationExist = conversationRepo.findAll().stream().filter(conversation1 -> conversation1.getFirstUser().getId() == demand.getUser().getId() && conversation1.getSecondUser().getId() == demand.getRide().getCreator().getId()
+                    || conversation1.getFirstUser().getId() == demand.getRide().getCreator().getId() && conversation1.getSecondUser().getId() == demand.getUser().getId()).findFirst().orElse(null);
+
+            if(conversationExist == null){
+                conversationRepo.save(conversation);
+            }
+
+            //add message
+            Message message = new Message();
+            //message body that i have accepted your demand
+            message.setBody("Salut, j'ai accepté votre demande de covoiturage.");
+            message.setSender(demand.getRide().getCreator());
+            if(conversationExist == null){
+                message.setConversation(conversation);
+            }else{
+                message.setConversation(conversationExist);
+            }
+            message.setCreatedAt(new Date());
+            //save message
+            messageRepo.save(message);
+
         }
 
         return demandRepo.save(demand);

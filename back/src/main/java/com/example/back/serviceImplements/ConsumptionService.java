@@ -23,7 +23,7 @@ public class ConsumptionService implements IConsumptionService {
 
     @Override
     public List<User> TopThreeSavedConsumers() {
-        return userRepo.findAll().stream().sorted((u1, u2) -> u2.getConsumptionExpected() - u1.getConsumptionExpected()).limit(3).collect(Collectors.toList());
+        return userRepo.findAll().stream().sorted((u1, u2) -> u2.getConsumptionExpected() - u1.getConsumptionExpected()).limit(3).filter(user -> user.getConsumptionExpected() > 0).collect(Collectors.toList());
     }
 
     @Override
