@@ -19,7 +19,7 @@ public class DemandController {
         return iDemandService.addDemand(userid, rideid);
     }
 
-    @PutMapping("/changeStatus/{id}/{status}")
+    @PostMapping("/changeStatus/{id}/{status}")
     Demand changeDemandStatus(@PathVariable int id, @PathVariable String status){
         return iDemandService.ChangeDemandStatus(id, status);
     }

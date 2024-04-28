@@ -4,6 +4,7 @@ import com.example.back.entities.Day;
 import com.example.back.entities.Gender;
 import com.example.back.entities.Ride;
 import com.example.back.entities.User;
+import com.example.back.repositories.DemandRepo;
 import com.example.back.repositories.RideRepo;
 import com.example.back.repositories.UserRepo;
 import com.example.back.serviceInterfaces.IRideService;
@@ -24,6 +25,8 @@ public class RideService implements IRideService {
     @Autowired
     UserRepo userRepo;
 
+    @Autowired
+    DemandRepo demandRepo;
 
 
         @Override
@@ -68,6 +71,18 @@ public class RideService implements IRideService {
 
     @Override
     public void deleteRide(int id) {
+        Ride ride = rideRepo.findById(id).orElse(null);
+        if(ride == null) return;
+
+        ride.getCreator().setConsumptionExpected(ride.getCreator().getConsumptionExpected() - ride.getConsumption());
+        userRepo.save(ride.getCreator());
+
+        //delete all demands for this ride
+        demandRepo.findAll().stream()
+                .filter(demand -> demand.getRide().getId() == id)
+                .forEach(demandRepo::delete);
+
+
         rideRepo.deleteById(id);
     }
 
