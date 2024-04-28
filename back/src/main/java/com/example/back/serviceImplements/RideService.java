@@ -52,7 +52,11 @@ public class RideService implements IRideService {
 
     @Override
     public Ride getRide(int id) {
-        return rideRepo.findById(id).orElse(null);
+        //get last ride by the userid
+        return rideRepo.findAll().stream()
+                .filter(ride->ride.getCreator().getId() == id)
+                .reduce((first, second) -> second)
+                .orElse(null);
     }
 
     @Override
