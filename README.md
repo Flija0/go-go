@@ -1,0 +1,2 @@
+Le calcul de la consommation de CO2 économisée consiste à estimer le total prévu de l'utilisateur à chaque fois qu'il crée ou rejoint un trajet, moins le total de la consommation du trajet. La consommation du trajet correspond à la consommation de CO2 de la voiture multipliée par la distance entre deux points.
+[ NB : La distance entre deux points est statique, nous n'avons pas implémenté de méthode dynamique à partir de la carte map ]
